@@ -1,3 +1,6 @@
+// 导入API模块
+import { sendToDeepSeekAI, streamFromDeepSeekAI } from './api.js';
+
 document.addEventListener('DOMContentLoaded', function() {
     // 获取DOM元素
     const themeToggleBtn = document.getElementById('theme-toggle-btn');
@@ -585,75 +588,131 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 发送消息到AI并处理响应
 function sendMessageToAI(message, fileData) {
-    // 显示AI正在输入的状态
-    const aiAvatar = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgICA8Y2lyY2xlIGN4PSIxNiIgY3k9IjE2IiByPSIxNSIgZmlsbD0iIzRmNDZlNSIvPgogICAgPHRleHQgeD0iMTYiIHk9IjIwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTAiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5BSTwvdGV4dD4KPC9zdmc+";
-    const typingIndicator = document.createElement('div');
-    typingIndicator.className = 'message ai-message typing';
-    typingIndicator.innerHTML = `
-        <div class="message-avatar">
-            <img src="${aiAvatar}" alt="AI头像">
-        </div>
-        <div class="message-content">
-            <div class="typing-indicator">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-    `;
+    // 导入API函数
+    import('./api.js')
+        .then(({ streamFromDeepSeekAI }) => {
+            // 显示AI正在输入的状态
+            const aiAvatar = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgICA8Y2lyY2xlIGN4PSIxNiIgY3k9IjE2IiByPSIxNSIgZmlsbD0iIzRmNDZlNSIvPgogICAgPHRleHQgeD0iMTYiIHk9IjIwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTAiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5BSTwvdGV4dD4KPC9zdmc+";
+            const typingIndicator = document.createElement('div');
+            typingIndicator.className = 'message ai-message typing';
+            typingIndicator.innerHTML = `
+                <div class="message-avatar">
+                    <img src="${aiAvatar}" alt="AI头像">
+                </div>
+                <div class="message-content">
+                    <div class="typing-indicator">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+            `;
+            
+            chatMessages.appendChild(typingIndicator);
+            scrollToBottom();
+            
+            // 准备API调用选项
+            const options = {
+                model: "deepseek-chat",
+                temperature: 0.7
+            };
+            
+            // 如果当前角色不是默认角色，添加系统角色提示
+            if (currentRole !== 'default') {
+                const roleName = document.querySelector(`.role-card[data-role="${currentRole}"] h4`)?.textContent || currentRole;
+                options.systemRole = `你是${roleName}。请以${roleName}的身份和语气回答用户问题。`;
+            }
+            
+            // 如果有文件上传，在消息中添加文件信息
+            let userMessage = message;
+            if (fileData) {
+                userMessage = `[用户上传了文件: ${fileData.name}]\n${message}`;
+            }
     
-    chatMessages.appendChild(typingIndicator);
-    scrollToBottom();
+            // 检查是否需要使用知识库增强回答
+            const autoUseKnowledge = document.getElementById('auto-use-knowledge')?.checked || false;
+            if (autoUseKnowledge && knowledgeDocuments.length > 0) {
+                const relevantDocs = findRelevantDocuments(message);
+                if (relevantDocs.length > 0) {
+                    // 将知识库信息添加到用户消息中
+                    const docNames = relevantDocs.map(doc => doc.name).join('、');
+                    userMessage = `[参考以下知识文档: ${docNames}]\n${userMessage}`;
+                }
+            }
+            
+            // 创建AI消息元素但不立即添加完整内容
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message ai-message';
+            
+            const messageAvatar = document.createElement('div');
+            messageAvatar.className = 'message-avatar';
+            messageAvatar.innerHTML = `<img src="${aiAvatar}" alt="AI头像">`;
+            
+            const messageContent = document.createElement('div');
+            messageContent.className = 'message-content';
+            
+            const messageText = document.createElement('div');
+            messageText.className = 'message-text';
+            
+            const textParagraph = document.createElement('p');
+            textParagraph.textContent = ''; // 初始为空，将逐字填充
+            messageText.appendChild(textParagraph);
+            
+            const messageTime = document.createElement('div');
+            messageTime.className = 'message-time';
+            messageTime.textContent = getCurrentTime();
+            
+            messageDiv.appendChild(messageAvatar);
+            messageContent.appendChild(messageText);
+            messageContent.appendChild(messageTime);
+            messageDiv.appendChild(messageContent);
+            
+            // 调用DeepSeek API获取流式响应
+            streamFromDeepSeekAI(userMessage, 
+                // 处理每个响应块
+                (chunk) => {
+                    // 添加文本块到段落
+                    textParagraph.textContent += chunk;
+                    scrollToBottom();
+                },
+                options
+            ).then(() => {
+                // API调用完成后
+                // 移除输入中状态指示器
+                typingIndicator.remove();
+                
+                // 添加完整的消息到聊天区域
+                chatMessages.appendChild(messageDiv);
+                
+                // 添加消息操作按钮
+                addMessageActions(messageDiv, textParagraph);
+                
+                // 如果启用了自动朗读，朗读AI回复
+                if (document.getElementById('auto-speak-toggle')?.checked) {
+                    speakText(textParagraph.textContent);
+                }
+                
+                // 保存聊天记录
+                saveChatToHistory();
+            }).catch(error => {
+                // 处理API调用错误
+                typingIndicator.remove();
+                showMessage(`AI响应出错: ${error.message}`, 'error');
+                
+                // 添加错误消息
+                textParagraph.textContent = `抱歉，我无法回答您的问题。发生了错误: ${error.message}`;
+                chatMessages.appendChild(messageDiv);
+            });
+        }).catch(error => {
+             console.error('加载API模块失败:', error);
+             showMessage('无法连接到AI服务', 'error');
+         });
+}
     
-    // 准备AI回复内容
-    let aiResponse = "这是一个模拟的AI响应。在实际应用中，这里应该调用AI API来获取真实的响应。这个响应会逐字显示，模拟真人打字效果。您可以看到文字是如何一个字一个字地出现的，就像有人在实时输入一样。";
+// 添加消息操作按钮的函数
+function addMessageActions(messageDiv, textParagraph) {
+    const messageContent = messageDiv.querySelector('.message-content');
     
-    // 检查是否需要使用知识库增强回答
-    const autoUseKnowledge = document.getElementById('auto-use-knowledge')?.checked || false;
-    if (autoUseKnowledge && knowledgeDocuments.length > 0) {
-        const relevantDocs = findRelevantDocuments(message);
-        if (relevantDocs.length > 0) {
-            aiResponse = generateKnowledgeEnhancedResponse(message, relevantDocs);
-        }
-    }
-    
-    // 如果有文件上传，添加相关响应
-    if (fileData) {
-        aiResponse = `我已收到您上传的文件：${fileData.name}。\n${aiResponse}`;
-    }
-    
-    // 根据当前角色调整响应
-    if (currentRole !== 'default') {
-        const roleName = document.querySelector(`.role-card[data-role="${currentRole}"] h4`)?.textContent || currentRole;
-        aiResponse = `[以${roleName}角色回答]\n${aiResponse}`;
-    }
-    
-    // 创建AI消息元素但不立即添加完整内容
-    const messageDiv = document.createElement('div');
-    messageDiv.className = 'message ai-message';
-    
-    const messageAvatar = document.createElement('div');
-    messageAvatar.className = 'message-avatar';
-    messageAvatar.innerHTML = `<img src="${aiAvatar}" alt="AI头像">`;
-    
-    const messageContent = document.createElement('div');
-    messageContent.className = 'message-content';
-    
-    const messageText = document.createElement('div');
-    messageText.className = 'message-text';
-    
-    const textParagraph = document.createElement('p');
-    textParagraph.textContent = ''; // 初始为空，将逐字填充
-    messageText.appendChild(textParagraph);
-    
-    const messageTime = document.createElement('div');
-    messageTime.className = 'message-time';
-    messageTime.textContent = getCurrentTime();
-    
-    messageContent.appendChild(messageText);
-    messageContent.appendChild(messageTime);
-    
-    // 添加操作按钮
     const actions = document.createElement('div');
     actions.className = 'message-actions';
     actions.innerHTML = `
@@ -669,75 +728,38 @@ function sendMessageToAI(message, fileData) {
         <button class="action-btn export-btn" title="导出对话">
             <i class="fas fa-download"></i>
         </button>
-        <button class="action-btn speak-btn" title="朗读回复">
+        <button class="action-btn speak-btn" title="朗读">
             <i class="fas fa-volume-up"></i>
         </button>
     `;
     messageContent.appendChild(actions);
     
-    messageDiv.appendChild(messageAvatar);
-    messageDiv.appendChild(messageContent);
+    // 为复制按钮添加事件监听
+    const copyBtn = actions.querySelector('.copy-btn');
+    copyBtn.addEventListener('click', function() {
+        const textToCopy = textParagraph.textContent;
+        navigator.clipboard.writeText(textToCopy)
+            .then(() => {
+                showMessage('已复制到剪贴板', 'success');
+            })
+            .catch(err => {
+                console.error('复制失败:', err);
+                showMessage('复制失败', 'error');
+            });
+    });
     
-    // 延迟后开始流式输出
-    setTimeout(() => {
-        // 移除输入指示器
-        chatMessages.removeChild(typingIndicator);
-        
-        // 添加消息元素到聊天区域
-        chatMessages.appendChild(messageDiv);
-        
-        // 为复制按钮添加事件监听
-        const copyBtn = actions.querySelector('.copy-btn');
-        copyBtn.addEventListener('click', function() {
-            navigator.clipboard.writeText(textParagraph.textContent)
-                .then(() => {
-                    showMessage('已复制到剪贴板', 'success');
-                })
-                .catch(err => {
-                    console.error('复制失败:', err);
-                    showMessage('复制失败', 'error');
-                });
-        });
-        
-        // 为导出按钮添加事件监听
-        const exportBtn = actions.querySelector('.export-btn');
-        exportBtn.addEventListener('click', function() {
-            showExportOptions(messageDiv);
-        });
-        
-        // 为朗读按钮添加事件监听
-        const speakBtn = actions.querySelector('.speak-btn');
-        speakBtn.addEventListener('click', function() {
-            speakText(textParagraph.textContent);
-        });
-        
-        // 流式输出文本
-        let index = 0;
-        const characters = aiResponse.split('');
-        
-        function typeNextChar() {
-            if (index < characters.length) {
-                textParagraph.textContent += characters[index];
-                index++;
-                scrollToBottom();
-                
-                // 随机延迟，模拟真实打字速度
-                const delay = Math.floor(Math.random() * 30) + 20; // 20-50ms
-                setTimeout(typeNextChar, delay);
-            } else {
-                // 打字完成后保存聊天记录
-                saveChatToHistory();
-                
-                // 如果启用了自动朗读，则自动朗读回复
-                if (autoSpeakEnabled) {
-                    speakText(textParagraph.textContent);
-                }
-            }
-        }
-        
-        // 开始打字
-        typeNextChar();
-    }, 1000);
+    // 为导出按钮添加事件监听
+    const exportBtn = actions.querySelector('.export-btn');
+    exportBtn.addEventListener('click', function() {
+        showExportOptions(messageDiv);
+    });
+    
+    // 为朗读按钮添加事件监听
+    const speakBtn = actions.querySelector('.speak-btn');
+    speakBtn.addEventListener('click', function() {
+        speakText(textParagraph.textContent);
+    });
+}
 }
 
 // 查找与用户消息相关的知识文档
@@ -847,6 +869,7 @@ function generateKnowledgeEnhancedResponse(message, relevantDocs) {
         // 创建消息文本区域
         const messageText = document.createElement('div');
         messageText.className = 'message-text';
+        messageText.setAttribute('data-sender', type === 'user' ? '用户' : '智能助手');
         
         // 检查是否有文件上传
         if (currentUploadedFile && type === 'user') {
@@ -905,6 +928,9 @@ function generateKnowledgeEnhancedResponse(message, relevantDocs) {
                 <button class="action-btn export-btn" title="导出对话">
                     <i class="fas fa-download"></i>
                 </button>
+                <button class="action-btn speak-btn" title="朗读">
+                    <i class="fas fa-volume-up"></i>
+                </button>
             `;
             messageContent.appendChild(actions);
             
@@ -927,6 +953,12 @@ function generateKnowledgeEnhancedResponse(message, relevantDocs) {
             exportBtn.addEventListener('click', function() {
                 showExportOptions(messageDiv);
             });
+            
+            // 为朗读按钮添加事件监听
+            const speakBtn = actions.querySelector('.speak-btn');
+            speakBtn.addEventListener('click', function() {
+                speakText(textParagraph.textContent);
+            });
         }
         
         // 组装完整消息
@@ -934,6 +966,11 @@ function generateKnowledgeEnhancedResponse(message, relevantDocs) {
         messageDiv.appendChild(messageContent);
         
         chatMessages.appendChild(messageDiv);
+        
+        // 滚动到底部
+        scrollToBottom();
+        
+        return { messageDiv, textParagraph };
     }
     
     // 显示导出选项
