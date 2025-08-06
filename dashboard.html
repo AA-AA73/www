@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智语慧聊 - 智能对话平台</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="patterns.css">
+    <link rel="stylesheet" href="history.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="theme-toggle">
+        <button id="theme-toggle-btn">
+            <i class="fas fa-moon"></i>
+        </button>
+    </div>
+    
+    <div class="app-container">
+        <!-- 侧边栏 -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgICA8Y2lyY2xlIGN4PSIyMCIgY3k9IjIwIiByPSIxOCIgZmlsbD0iIzRmNDZlNSIvPgogICAgPHRleHQgeD0iMjAiIHk9IjI1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5BSTwvdGV4dD4KPC9zdmc+" alt="智语慧聊 Logo">
+                    <h1>智语慧聊</h1>
+                </div>
+            </div>
+            
+            <div class="sidebar-menu">
+                <div class="menu-item active" data-type="home">
+                    <i class="fas fa-home"></i>
+                    <span>主页</span>
+                </div>
+                <div class="menu-item" data-type="chat">
+                    <i class="fas fa-comment-dots"></i>
+                    <span>对话</span>
+                </div>
+                <div class="menu-item" data-type="history">
+                    <i class="fas fa-history"></i>
+                    <span>历史记录</span>
+                </div>
+                <div class="menu-item" data-type="favorites">
+                    <i class="fas fa-star"></i>
+                    <span>我的收藏</span>
+                </div>
+                <div class="menu-item" data-type="settings">
+                    <i class="fas fa-cog"></i>
+                    <span>设置</span>
+                </div>
+            </div>
+            
+            <div class="sidebar-footer">
+                <div class="user-profile" id="user-profile">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgICA8Y2lyY2xlIGN4PSIxNiIgY3k9IjE2IiByPSIxNSIgZmlsbD0iIzEwYjk4MSIvPgogICAgPHRleHQgeD0iMTYiIHk9IjIwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5VPC90ZXh0Pgo8L3N2Zz4=" alt="用户头像">
+                    <span>用户名</span>
+                    <i class="fas fa-chevron-up"></i>
+                </div>
+                
+                <div class="user-menu" id="user-menu">
+                    <div class="menu-item" id="profile-menu-item">
+                        <i class="fas fa-user"></i> 个人资料
+                    </div>
+                    <div class="menu-item">
+                        <i class="fas fa-sign-out-alt"></i> 退出登录
+                    </div>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- 主内容区 -->
+        <main class="main-content">
+            <div class="dashboard-container">
+                <div class="welcome-section">
+                    <h1>欢迎<span id="username-display">用户名</span>使用智语慧聊</h1>
+                    <p>智能对话平台，让沟通更高效</p>
+                </div>
+                
+                <div class="feature-cards">
+                    <div class="feature-card" id="start-chat-card">
+                        <div class="card-icon">
+                            <i class="fas fa-comment-dots"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>开始对话</h3>
+                            <p>与AI助手进行智能对话，获取信息和帮助</p>
+                        </div>
+                        <button class="card-btn">
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="feature-card" id="history-card">
+                        <div class="card-icon">
+                            <i class="fas fa-history"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>历史记录</h3>
+                            <p>查看和管理您的历史对话记录</p>
+                        </div>
+                        <button class="card-btn">
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="feature-card" id="favorites-card">
+                        <div class="card-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>我的收藏</h3>
+                            <p>查看您收藏的对话和回答</p>
+                        </div>
+                        <button class="card-btn">
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="feature-card" id="settings-card">
+                        <div class="card-icon">
+                            <i class="fas fa-cog"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>个性化设置</h3>
+                            <p>自定义您的使用偏好和界面设置</p>
+                        </div>
+                        <button class="card-btn">
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="quick-actions">
+                    <h2>快捷操作</h2>
+                    <div class="action-buttons">
+                        <button class="action-btn" id="new-chat-btn">
+                            <i class="fas fa-plus"></i>
+                            <span>新对话</span>
+                        </button>
+                        <button class="action-btn" id="search-history-btn">
+                            <i class="fas fa-search"></i>
+                            <span>搜索历史</span>
+                        </button>
+                        <button class="action-btn" id="profile-btn">
+                            <i class="fas fa-user-edit"></i>
+                            <span>编辑资料</span>
+                        </button>
+                        <button class="action-btn" id="theme-btn">
+                            <i class="fas fa-palette"></i>
+                            <span>切换主题</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="recent-activity">
+                    <h2>最近活动</h2>
+                    <div class="activity-list">
+                        <div class="activity-item" data-type="chat" data-id="1">
+                            <div class="activity-icon">
+                                <i class="fas fa-comment"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">关于人工智能的讨论</div>
+                                <div class="activity-time">今天 10:30</div>
+                            </div>
+                        </div>
+                        
+                        <div class="activity-item" data-type="chat" data-id="2">
+                            <div class="activity-icon">
+                                <i class="fas fa-comment"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">Python编程问题解答</div>
+                                <div class="activity-time">今天 09:15</div>
+                            </div>
+                        </div>
+                        
+                        <div class="activity-item" data-type="chat" data-id="3">
+                            <div class="activity-icon">
+                                <i class="fas fa-comment"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">旅行计划建议</div>
+                                <div class="activity-time">昨天 18:45</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="auth.js"></script>
+    <script src="themes.js"></script>
+    <script src="history.js"></script>
+    <script src="dashboard.js"></script>
+</body>
+</html>

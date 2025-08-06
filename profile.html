@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人资料 - 智语慧聊</title>
+    <link rel="stylesheet" href="profile.css">
+    <link rel="stylesheet" href="patterns.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="theme-toggle">
+        <button id="theme-toggle-btn">
+            <i class="fas fa-moon"></i>
+        </button>
+    </div>
+    
+    <div class="app-container">
+        <!-- 侧边栏 -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgICA8Y2lyY2xlIGN4PSIyMCIgY3k9IjIwIiByPSIxOCIgZmlsbD0iIzRmNDZlNSIvPgogICAgPHRleHQgeD0iMjAiIHk9IjI1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5BSTwvdGV4dD4KPC9zdmc+" alt="智语慧聊 Logo">
+                    <h1>智语慧聊</h1>
+                </div>
+                <button class="new-chat-btn">
+                    <i class="fas fa-plus"></i> 新对话
+                </button>
+            </div>
+            
+            <div class="sidebar-menu">
+                <div class="menu-item" data-type="home">
+                    <i class="fas fa-home"></i>
+                    <span>主页</span>
+                </div>
+                <div class="menu-item" data-type="chat">
+                    <i class="fas fa-comment-dots"></i>
+                    <span>对话</span>
+                </div>
+                <div class="menu-item" data-type="history">
+                    <i class="fas fa-history"></i>
+                    <span>历史记录</span>
+                </div>
+                <div class="menu-item" data-type="favorites">
+                    <i class="fas fa-star"></i>
+                    <span>我的收藏</span>
+                </div>
+                <div class="menu-item active" data-type="settings">
+                    <i class="fas fa-cog"></i>
+                    <span>设置</span>
+                </div>
+            </div>
+            
+            <div class="sidebar-footer">
+                <div class="user-profile" id="user-profile">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgICA8Y2lyY2xlIGN4PSIxNiIgY3k9IjE2IiByPSIxNSIgZmlsbD0iIzEwYjk4MSIvPgogICAgPHRleHQgeD0iMTYiIHk9IjIwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5VPC90ZXh0Pgo8L3N2Zz4=" alt="用户头像">
+                    <span>用户名</span>
+                    <i class="fas fa-chevron-up"></i>
+                </div>
+                
+                <div class="user-menu" id="user-menu">
+                    <div class="menu-item">
+                        <i class="fas fa-user"></i> 个人资料
+                    </div>
+                    <div class="menu-item">
+                        <i class="fas fa-cog"></i> 设置
+                    </div>
+                    <div class="menu-item">
+                        <i class="fas fa-sign-out-alt"></i> 退出登录
+                    </div>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- 主内容区 -->
+        <main class="main-content">
+            <div class="profile-container">
+                <div class="profile-header">
+                    <a href="dashboard.html" class="home-btn" title="返回主页">
+                        <i class="fas fa-home"></i>
+                    </a>
+                    <div class="header-content">
+                        <h2>个人资料</h2>
+                        <p>管理您的账号信息和偏好设置</p>
+                    </div>
+                </div>
+                
+                <div class="profile-content">
+                    <div class="profile-section">
+                        <h3>基本信息</h3>
+                        <div class="avatar-upload">
+                            <div class="avatar-preview">
+                                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUwIiBoZWlnaHQ9IjE1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxjaXJjbGUgY3g9Ijc1IiBjeT0iNzUiIHI9IjcwIiBmaWxsPSIjMTBiOTgxIi8+CiAgICA8dGV4dCB4PSI3NSIgeT0iODUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSI1MCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlU8L3RleHQ+Cjwvc3ZnPg==" alt="用户头像" id="avatar-preview">
+                            </div>
+                            <div class="avatar-edit">
+                                <input type="file" id="avatar-upload" accept="image/*">
+                                <label for="avatar-upload">更换头像</label>
+                            </div>
+                        </div>
+                        
+                        <form class="profile-form">
+                            <div class="form-group">
+                                <label for="username">用户名</label>
+                                <input type="text" id="username" value="用户名" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="email">邮箱</label>
+                                <input type="email" id="email" value="user@example.com" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="bio">个人简介</label>
+                                <textarea id="bio" rows="3" placeholder="介绍一下自己吧..."></textarea>
+                            </div>
+                            
+                            <button type="submit" class="save-btn">保存更改</button>
+                        </form>
+                    </div>
+                    
+                    <div class="profile-section">
+                        <h3>安全设置</h3>
+                        <form class="profile-form">
+                            <div class="form-group">
+                                <label for="current-password">当前密码</label>
+                                <input type="password" id="current-password" placeholder="输入当前密码">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="new-password">新密码</label>
+                                <input type="password" id="new-password" placeholder="输入新密码">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="confirm-password">确认新密码</label>
+                                <input type="password" id="confirm-password" placeholder="再次输入新密码">
+                            </div>
+                            
+                            <button type="submit" class="save-btn">更新密码</button>
+                        </form>
+                    </div>
+                    
+                    <div class="profile-section">
+                        <h3>偏好设置</h3>
+                        <form class="profile-form">
+                            <div class="form-group">
+                                <label>界面模式</label>
+                                <div class="theme-options">
+                                    <div class="theme-option">
+                                        <input type="radio" id="theme-light" name="theme" value="light" checked>
+                                        <label for="theme-light">明亮</label>
+                                    </div>
+                                    <div class="theme-option">
+                                        <input type="radio" id="theme-dark" name="theme" value="dark">
+                                        <label for="theme-dark">暗色</label>
+                                    </div>
+                                    <div class="theme-option">
+                                        <input type="radio" id="theme-system" name="theme" value="system">
+                                        <label for="theme-system">跟随系统</label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>界面主题</label>
+                                <div class="theme-pattern-options">
+                                    <div class="theme-pattern-option" data-pattern="default">
+                                        <div class="pattern-preview default-preview"></div>
+                                        <span>默认主题</span>
+                                    </div>
+                                    <div class="theme-pattern-option" data-pattern="waves">
+                                        <div class="pattern-preview waves-preview"></div>
+                                        <span>波浪主题</span>
+                                    </div>
+                                    <div class="theme-pattern-option" data-pattern="grid">
+                                        <div class="pattern-preview grid-preview"></div>
+                                        <span>网格主题</span>
+                                    </div>
+                                    <div class="theme-pattern-option" data-pattern="bubbles">
+                                        <div class="pattern-preview bubbles-preview"></div>
+                                        <span>气泡主题</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>语言</label>
+                                <select id="language">
+                                    <option value="zh-CN" selected>简体中文</option>
+                                    <option value="en-US">English</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>通知设置</label>
+                                <div class="notification-options">
+                                    <div class="notification-option">
+                                        <input type="checkbox" id="notification-email" checked>
+                                        <label for="notification-email">接收邮件通知</label>
+                                    </div>
+                                    <div class="notification-option">
+                                        <input type="checkbox" id="notification-system" checked>
+                                        <label for="notification-system">接收系统通知</label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button type="submit" class="save-btn">保存偏好</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="auth.js"></script>
+    <script src="themes.js"></script>
+    <script src="profile.js"></script>
+</body>
+</html>

@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智语慧聊 - 智能对话平台</title>
+    <link rel="stylesheet" href="chat.css">
+    <link rel="stylesheet" href="history.css">
+    <link rel="stylesheet" href="patterns.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="theme-toggle">
+        <button id="theme-toggle-btn">
+            <i class="fas fa-moon"></i>
+        </button>
+    </div>
+    
+    <div class="app-container">
+        <!-- 侧边栏 -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgICA8Y2lyY2xlIGN4PSIyMCIgY3k9IjIwIiByPSIxOCIgZmlsbD0iIzRmNDZlNSIvPgogICAgPHRleHQgeD0iMjAiIHk9IjI1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5BSTwvdGV4dD4KPC9zdmc+" alt="智语慧聊 Logo">
+                    <h1>智语慧聊</h1>
+                </div>
+                <button class="new-chat-btn">
+                    <i class="fas fa-plus"></i> 新对话
+                </button>
+            </div>
+            
+            <div class="sidebar-menu">
+                <div class="menu-item" data-type="home">
+                    <i class="fas fa-home"></i>
+                    <span>主页</span>
+                </div>
+                <div class="menu-item active" data-type="chat">
+                    <i class="fas fa-comment-dots"></i>
+                    <span>对话</span>
+                </div>
+                <div class="menu-item" data-type="history">
+                    <i class="fas fa-history"></i>
+                    <span>历史记录</span>
+                </div>
+                <div class="menu-item" data-type="favorites">
+                    <i class="fas fa-star"></i>
+                    <span>我的收藏</span>
+                </div>
+                <div class="menu-item" data-type="settings">
+                    <i class="fas fa-cog"></i>
+                    <span>设置</span>
+                </div>
+            </div>
+            
+            <div class="sidebar-search">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="搜索对话历史...">
+                </div>
+            </div>
+            
+            <div class="chat-history">
+                <div class="history-date">今天</div>
+                <div class="history-item active">
+                    <i class="fas fa-comment"></i>
+                    <div class="history-content">
+                        <div class="history-title">关于人工智能的讨论</div>
+                        <div class="history-time">10:30</div>
+                    </div>
+                </div>
+                
+                <div class="history-item">
+                    <i class="fas fa-comment"></i>
+                    <div class="history-content">
+                        <div class="history-title">Python编程问题解答</div>
+                        <div class="history-time">09:15</div>
+                    </div>
+                </div>
+                
+                <div class="history-date">昨天</div>
+                <div class="history-item">
+                    <i class="fas fa-comment"></i>
+                    <div class="history-content">
+                        <div class="history-title">旅行计划建议</div>
+                        <div class="history-time">18:45</div>
+                    </div>
+                </div>
+                
+                <div class="history-item">
+                    <i class="fas fa-comment"></i>
+                    <div class="history-content">
+                        <div class="history-title">健康饮食咨询</div>
+                        <div class="history-time">14:20</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="sidebar-footer">
+                <div class="user-profile" id="user-profile">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgICA8Y2lyY2xlIGN4PSIxNiIgY3k9IjE2IiByPSIxNSIgZmlsbD0iIzEwYjk4MSIvPgogICAgPHRleHQgeD0iMTYiIHk9IjIwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5VPC90ZXh0Pgo8L3N2Zz4=" alt="用户头像">
+                    <span>用户名</span>
+                    <i class="fas fa-chevron-up"></i>
+                </div>
+                
+                <div class="user-menu" id="user-menu">
+                    <div class="menu-item">
+                        <i class="fas fa-user"></i> 个人资料
+                    </div>
+                    <div class="menu-item">
+                        <i class="fas fa-cog"></i> 设置
+                    </div>
+                    <div class="menu-item">
+                        <i class="fas fa-sign-out-alt"></i> 退出登录
+                    </div>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- 主内容区 -->
+        <main class="main-content">
+            <div class="chat-container">
+                <div class="chat-header">
+                    <a href="dashboard.html" class="home-btn" title="返回主页">
+                        <i class="fas fa-home"></i>
+                    </a>
+                    <h2>关于人工智能的讨论</h2>
+                    <div class="chat-actions">
+                        <button class="action-btn">
+                            <i class="fas fa-share-alt"></i>
+                        </button>
+                        <button class="action-btn">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="chat-messages">
+                    <div class="message-date">今天 10:30</div>
+                    
+                    <div class="message user-message">
+                        <div class="message-avatar">
+                            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgICA8Y2lyY2xlIGN4PSIxNiIgY3k9IjE2IiByPSIxNSIgZmlsbD0iIzEwYjk4MSIvPgogICAgPHRleHQgeD0iMTYiIHk9IjIwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5VPC90ZXh0Pgo8L3N2Zz4=" alt="用户头像">
+                        </div>
+                        <div class="message-content">
+                            <div class="message-text" data-sender="用户">你能告诉我关于人工智能的最新发展吗？</div>
+                            <div class="message-time">10:30</div>
+                        </div>
+                    </div>
+                    
+                    <div class="message ai-message">
+                        <div class="message-avatar">
+                            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgICA8Y2lyY2xlIGN4PSIxNiIgY3k9IjE2IiByPSIxNSIgZmlsbD0iIzRmNDZlNSIvPgogICAgPHRleHQgeD0iMTYiIHk9IjIwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTAiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5BSTwvdGV4dD4KPC9zdmc+" alt="AI头像">
+                        </div>
+                        <div class="message-content">
+                            <div class="message-text" data-sender="智能助手">
+                                <p>人工智能领域最近有几个重要的发展：</p>
+                                <ol>
+                                    <li>大型语言模型(LLM)的进步，如GPT-4、Claude和Gemini等，它们在理解和生成人类语言方面取得了显著进步。</li>
+                                    <li>多模态AI系统的发展，能够同时处理文本、图像、音频和视频。</li>
+                                    <li>AI在医疗保健领域的应用，包括疾病诊断、药物发现和个性化治疗。</li>
+                                    <li>自动驾驶技术的持续改进，多家公司正在进行实际道路测试。</li>
+                                    <li>AI伦理和监管框架的发展，旨在确保AI技术的负责任使用。</li>
+                                </ol>
+                                <p>这些发展正在改变多个行业，并引发关于AI未来发展方向的重要讨论。</p>
+                            </div>
+                            <div class="message-time">10:31</div>
+                            <div class="message-actions">
+                                <button class="action-btn" title="有帮助">
+                                    <i class="fas fa-thumbs-up"></i>
+                                </button>
+                                <button class="action-btn" title="没帮助">
+                                    <i class="fas fa-thumbs-down"></i>
+                                </button>
+                                <button class="action-btn" title="复制回答">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="message user-message">
+                        <div class="message-avatar">
+                            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgICA8Y2lyY2xlIGN4PSIxNiIgY3k9IjE2IiByPSIxNSIgZmlsbD0iIzEwYjk4MSIvPgogICAgPHRleHQgeD0iMTYiIHk9IjIwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5VPC90ZXh0Pgo8L3N2Zz4=" alt="用户头像">
+                        </div>
+                        <div class="message-content">
+                            <div class="message-text" data-sender="用户">这些进展真的很令人兴奋！你认为AI对就业市场会有什么影响？</div>
+                            <div class="message-time">10:33</div>
+                        </div>
+                    </div>
+                    
+                    <div class="message ai-message">
+                        <div class="message-avatar">
+                            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgICA8Y2lyY2xlIGN4PSIxNiIgY3k9IjE2IiByPSIxNSIgZmlsbD0iIzRmNDZlNSIvPgogICAgPHRleHQgeD0iMTYiIHk9IjIwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTAiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5BSTwvdGV4dD4KPC9zdmc+" alt="AI头像">
+                        </div>
+                        <div class="message-content">
+                            <div class="message-text" data-sender="智能助手">
+                                <p>AI对就业市场的影响是复杂且多方面的：</p>
+                                <p><strong>潜在挑战：</strong></p>
+                                <ul>
+                                    <li>某些重复性和可预测的工作可能会被自动化，如数据输入、基础客服和某些制造工作。</li>
+                                    <li>中等技能工作可能面临更大压力，因为AI能够执行越来越复杂的任务。</li>
+                                </ul>
+                                <p><strong>新机遇：</strong></p>
+                                <ul>
+                                    <li>创造新的工作类别，如AI训练师、AI伦理专家和AI系统监督员。</li>
+                                    <li>增强现有工作，使人类可以专注于创造力、批判性思维和情感智能等方面。</li>
+                                    <li>提高生产力，可能导致经济增长和新的就业机会。</li>
+                                </ul>
+                                <p>关键是社会需要投资于教育和再培训计划，帮助工人适应这一转变。那些将AI视为增强工具而非替代品的行业和个人可能会获得最大收益。</p>
+                            </div>
+                            <div class="message-time">10:35</div>
+                            <div class="message-actions">
+                                <button class="action-btn" title="有帮助">
+                                    <i class="fas fa-thumbs-up"></i>
+                                </button>
+                                <button class="action-btn" title="没帮助">
+                                    <i class="fas fa-thumbs-down"></i>
+                                </button>
+                                <button class="action-btn" title="复制回答">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chat-input">
+                    <div class="input-container">
+                        <textarea placeholder="输入您的问题..." rows="1"></textarea>
+                        <div class="input-actions">
+                            <button class="action-btn" id="upload-btn" title="上传文件">
+                                <i class="fas fa-paperclip"></i>
+                                <input type="file" id="file-upload" accept="image/*,.pdf,.doc,.docx" style="display: none;">
+                            </button>
+                            <button class="action-btn" id="voice-btn" title="语音输入">
+                                <i class="fas fa-microphone"></i>
+                            </button>
+                            <div class="action-btn-dropdown">
+                            <button class="action-btn" id="settings-btn" title="对话设置">
+                                <i class="fas fa-cog"></i>
+                            </button>
+                            <div class="settings-dropdown" id="settings-dropdown">
+                                <div class="dropdown-item" id="role-dropdown-btn">
+                                    <i class="fas fa-user-circle"></i>
+                                    <span>选择角色</span>
+                                </div>
+                                <div class="dropdown-item" id="knowledge-dropdown-btn">
+                                    <i class="fas fa-book"></i>
+                                    <span>知识库</span>
+                                </div>
+                            </div>
+                        </div>
+                            <button class="send-btn">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="input-info">
+                        <span>智语慧聊使用DeepSeek AI提供支持</span>
+                        <!-- 语音朗读开关 -->
+                        <div class="auto-speak-toggle">
+                            <label class="toggle-container">
+                                <input type="checkbox" id="auto-speak-toggle">
+                                <span class="toggle-slider"></span>
+                                <span class="toggle-label">自动朗读回复</span>
+                            </label>
+                        </div>
+                        <div class="upload-preview" style="display: none;">
+                            <div class="preview-content">
+                                <img id="image-preview" style="display: none; max-height: 100px;">
+                                <div id="file-info" style="display: none;">
+                                    <i class="fas fa-file-alt"></i>
+                                    <span id="file-name"></span>
+                                </div>
+                            </div>
+                            <button id="remove-upload" class="remove-btn">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 模态框：角色选择 -->
+                <div id="role-modal" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3>选择对话角色</h3>
+                            <button class="close-btn">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="role-grid">
+                                <div class="role-card" data-role="default">
+                                    <div class="role-icon"><i class="fas fa-robot"></i></div>
+                                    <div class="role-info">
+                                        <h4>通用助手</h4>
+                                        <p>全能AI助手，可回答各类问题</p>
+                                    </div>
+                                </div>
+                                <div class="role-card" data-role="teacher">
+                                    <div class="role-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+                                    <div class="role-info">
+                                        <h4>教学导师</h4>
+                                        <p>耐心讲解知识点，适合学习场景</p>
+                                    </div>
+                                </div>
+                                <div class="role-card" data-role="programmer">
+                                    <div class="role-icon"><i class="fas fa-code"></i></div>
+                                    <div class="role-info">
+                                        <h4>编程专家</h4>
+                                        <p>提供代码和技术解决方案</p>
+                                    </div>
+                                </div>
+                                <div class="role-card" data-role="creative">
+                                    <div class="role-icon"><i class="fas fa-paint-brush"></i></div>
+                                    <div class="role-info">
+                                        <h4>创意顾问</h4>
+                                        <p>提供创意想法和灵感</p>
+                                    </div>
+                                </div>
+                                <div class="role-card custom-role" data-role="custom">
+                                    <div class="role-icon"><i class="fas fa-plus-circle"></i></div>
+                                    <div class="role-info">
+                                        <h4>创建自定义角色</h4>
+                                        <p>定制专属AI角色</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 模态框：创建自定义角色 -->
+                <div id="custom-role-modal" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3>创建自定义角色</h3>
+                            <button class="close-btn">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="custom-role-form">
+                                <div class="form-group">
+                                    <label for="role-name">角色名称</label>
+                                    <input type="text" id="role-name" placeholder="例如：旅行顾问" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="role-description">角色描述</label>
+                                    <input type="text" id="role-description" placeholder="简短描述这个角色的特点" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="role-prompt">角色提示词</label>
+                                    <textarea id="role-prompt" rows="4" placeholder="详细描述这个角色应该如何回答问题，包括语气、风格、专业领域等" required></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="role-example">示例对话（可选）</label>
+                                    <textarea id="role-example" rows="4" placeholder="提供一些示例问答，帮助AI更好地理解角色"></textarea>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="primary-btn">保存角色</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 模态框：知识库管理 -->
+                <div id="knowledge-modal" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3>知识库管理</h3>
+                            <button class="close-btn">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="knowledge-upload-section">
+                                <h4>上传知识文档</h4>
+                                <p class="description">上传PDF、Word或文本文件，AI将基于这些文档回答相关问题</p>
+                                <div class="upload-area" id="knowledge-upload-area">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <p>拖放文件到此处或点击上传</p>
+                                    <input type="file" id="knowledge-file-input" accept=".pdf,.doc,.docx,.txt" multiple hidden>
+                                </div>
+                                <button id="knowledge-upload-btn" class="primary-btn">选择文件</button>
+                            </div>
+                            
+                            <div class="knowledge-list-section">
+                                <h4>已上传的知识文档</h4>
+                                <div class="knowledge-list" id="knowledge-list">
+                                    <!-- 知识文档列表将在这里显示 -->
+                                    <div class="empty-state" id="empty-knowledge-state">
+                                        <i class="fas fa-book"></i>
+                                        <p>暂无上传的知识文档</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="knowledge-settings">
+                                <h4>知识库设置</h4>
+                                <div class="form-group">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="auto-use-knowledge">
+                                        <span>自动使用知识库回答相关问题</span>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label for="knowledge-threshold">相关性阈值</label>
+                                    <input type="range" id="knowledge-threshold" min="0" max="100" value="70">
+                                    <div class="range-labels">
+                                        <span>宽松</span>
+                                        <span>严格</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="auth.js"></script>
+    <script src="themes.js"></script>
+    <script src="history.js"></script>
+    <script src="chat.js"></script>
+</body>
+</html>
